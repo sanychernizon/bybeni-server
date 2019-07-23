@@ -17,7 +17,7 @@ mongoose.connect(process.env.MONGOURI, {useNewUrlParser: true})
   .catch((err) => { console.log(err) })
 
 // ROUTES
-  const product = require('./route/product')
+const product = require('./route/product')
 
 app.use('/api/product', product)
 

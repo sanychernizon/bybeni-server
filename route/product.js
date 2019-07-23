@@ -1,6 +1,6 @@
 const Product = require("../models/productModel");
 const express = require("express");
-
+const uploadCloud = require('../config/cloudinary');
 const router = express.Router();
 
 router.get("/", (req, res, next) => {
@@ -23,14 +23,20 @@ router.get("/", (req, res, next) => {
   }
 });
 
+router.post("/upload", uploadCloud.array('photos', 12), (req, res, next) => {
+  console.log(req.files[0].url)
+  res.json(req.files[0].url)
+})
+
 router.post("/", (req, res, next) => {
+  console.log(req.body)
   new Product({
     name: req.body.name,
     price: req.body.price,
     category: req.body.category,
     availableSizes: req.body.availableSizes,
+    imageURL: [],
     description: req.body.description,
-    imageURL: req.body.imageURL,
     isFeatured: req.body.isFeatured
   })
     .save()
