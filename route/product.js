@@ -1,6 +1,6 @@
 const Product = require("../models/productModel");
 const express = require("express");
-const uploadCloud = require('../config/cloudinary');
+const uploadCloud = require("../config/cloudinary");
 const router = express.Router();
 
 router.get("/", (req, res, next) => {
@@ -23,25 +23,24 @@ router.get("/", (req, res, next) => {
   }
 });
 
-router.post("/upload", uploadCloud.array('photos', 12), (req, res, next) => {
-  console.log(req.files[0].url)
-  res.json(req.files[0].url)
-})
+router.post("/upload", uploadCloud.single("photo"), (req, res, next) => {
+  res.json(req.file.url);
+});
 
 router.post("/", (req, res, next) => {
-  console.log(req.body)
   new Product({
     name: req.body.name,
     price: req.body.price,
     category: req.body.category,
     availableSizes: req.body.availableSizes,
-    imageURL: [],
+    imageURL: req.body.imageURL,
     description: req.body.description,
     isFeatured: req.body.isFeatured
   })
     .save()
     .then(newProduct => {
       console.log(newProduct);
+      res.status(200).send('salvo');
     });
 });
 
@@ -50,6 +49,7 @@ router.delete("/:id", (req, res, next) => {
     if (err) {
       console.log(err);
     }
+    res.status(200).send('deletado');
   });
 });
 
@@ -58,9 +58,10 @@ router.put("/:id", (req, res, next) => {
   const update = req.body;
   Product.findOneAndUpdate(filter, update, {
     new: true
-  }).then((product) => {
-    console.log(product)
-  })
+  }).then(product => {
+    console.log(product);
+    res.status(200).send('atualizado');    
+  });
 });
 
 module.exports = router;
