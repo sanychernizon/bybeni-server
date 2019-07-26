@@ -17,9 +17,11 @@ mongoose.connect(process.env.MONGOURI, {useNewUrlParser: true})
   .catch((err) => { console.log(err) })
 
 // ROUTES
-const product = require('./route/product')
+const product = require('./route/product'),
+  user = require('./route/user')
 
 app.use('/api/product', product)
+app.use('/api/user', user)
 
 // SERVER
 const port = process.env.PORT || 3004;
