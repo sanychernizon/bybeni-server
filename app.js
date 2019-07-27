@@ -4,12 +4,25 @@ const express = require('express'),
   mongoose = require('mongoose'),
   bcrypt = require('bcryptjs'),
   bodyParser = require('body-parser'),
-  cors = require('cors');
+  cors = require('cors'),
+  session = require('express-session');
 
 app.use(cors())
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({extended: false}))
 mongoose.set('useFindAndModify', false)
+
+// SESSION
+app.use(session({
+  name: process.env.SESS_NAME,
+  resave: false,
+  saveUninitialized: false,
+  secret: process.env.SESS_SECRET,
+  cookie: {
+    maxAge: 1000 * 60 * 60 * 24,
+    sameSite: true
+  }
+}))
 
 // CONNECT MONGODB
 mongoose.connect(process.env.MONGOURI, {useNewUrlParser: true})
@@ -18,7 +31,7 @@ mongoose.connect(process.env.MONGOURI, {useNewUrlParser: true})
 
 // ROUTES
 const product = require('./route/product'),
-  user = require('./route/user')
+  user = require('./route/user');
 
 app.use('/api/product', product)
 app.use('/api/user', user)

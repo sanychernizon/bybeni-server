@@ -9,11 +9,11 @@ router.get("/", (req, res) => {
 });
 
 router.post("/register", (req, res) => {
-  User.find({ cpf: req.body.cpf }, (err, user) => {
-    if(user){
-      res.send('usuário já cadastrado')
-    }
-      let { name, lastName, email, password, cpf, street, number, adjunct, neighborhood, city, state, zip } = req.body
+  User.findOne({ cpf: req.body.cpf }, (err, user) => {
+    if (user) {
+      res.json({alreadyRegister: true});
+    } else {
+      let {name,lastName,email,password,cpf,street,number,adjunct,neighborhood,city,state,zip} = req.body;
       new User({
         name: name,
         lastName: lastName,
@@ -29,12 +29,30 @@ router.post("/register", (req, res) => {
           neighborhood: neighborhood,
           zip: zip
         }
-      }).save()
-      .then(newUser => {
-        console.log(newUser);
-        res.send('Usuário cadastrado com sucesso!');
-      });;
+      })
+        .save()
+        .then(newUser => {
+          console.log(newUser);
+          res.json({isRegister: true});
+        }); 
+    }
   });
 });
+
+router.post("/login", (req, res) => {
+  User.findOne({ email: req.body.userEmail }, (err, user) => {
+    if(user.password === req.body.userPassword) {
+      res.json(user)
+    } else {
+      let data = {incorrectPassword: true}
+      res.statusMessage = 'incorrect'
+      res.json(data)
+    }
+  })
+})
+
+router.post("/logout", (req, res) => {
+
+})
 
 module.exports = router;
