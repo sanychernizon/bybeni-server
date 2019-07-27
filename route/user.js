@@ -9,7 +9,7 @@ router.get("/", (req, res) => {
 });
 
 router.post("/register", (req, res) => {
-  User.findOne({ cpf: req.body.cpf }, (err, user) => {
+  User.findOne({ email: req.body.email }, (err, user) => {
     if (user) {
       res.json({alreadyRegister: true});
     } else {

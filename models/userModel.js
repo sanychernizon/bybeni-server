@@ -15,7 +15,8 @@ const userSchema = new Schema({
     state: String,
     neighborhood: String,
     zip: String
-  }
+  },
+  orders: [{ type: Schema.Types.ObjectId, ref: 'Order' }]
 });
 
 const User = mongoose.model("User", userSchema);
