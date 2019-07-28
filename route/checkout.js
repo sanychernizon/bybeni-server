@@ -15,7 +15,7 @@ router.post("/order-placed", (req, res) => {
 
   new Order({
     userId: req.body.userLoged._id,
-    status: "Aguardando",
+    status: "processing",
     totalPrice: req.body.totalPrice,
     idTransaction: 0,
     installments: req.body.installments
@@ -37,6 +37,7 @@ router.post("/order-placed", (req, res) => {
                 payment_method: "credit_card",
                 card_hash: hash,
                 // postback_url: "",
+                // COLOCAR OS INSTALMMENTS
                 customer: {
                   name: req.body.userLoged.name,
                   email: req.body.userLoged.email,
@@ -59,7 +60,28 @@ router.post("/order-placed", (req, res) => {
               };
               service
                 .createTransaction(payload)
-                .then(response => console.log(response))
+                .then(response => {
+                  // console.log(response)
+                  console.log("STATUS: " + response.status);
+                  Order.findOneAndUpdate(
+                    { _id: response.metadata.idProduto },
+                    { status: response.status, idTransaction: response.id },
+                    { new: true }
+                  ).then(response => {
+                    switch (response.status) {
+                      case "processing":
+                        res.json({ orderStatus: "processing" });
+                        break;
+                      case "paid":
+                        res.json({ orderStatus: "paid" });
+                        break;
+                      case "refused":
+                        res.json({ orderStatus: "refused" });
+                        break;
+                    }
+                    // console.log(response);
+                  });
+                })
                 .catch(error => console.error(error));
             })
             .catch(error => console.error(error));
