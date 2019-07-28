@@ -8,6 +8,7 @@ router.get("/", (req, res) => {
   });
 });
 
+
 router.post("/register", (req, res) => {
   User.findOne({ email: req.body.email }, (err, user) => {
     if (user) {

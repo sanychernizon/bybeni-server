@@ -33,11 +33,13 @@ mongoose
 // ROUTES
 const product = require("./route/product"),
   user = require("./route/user"),
-  checkout = require("./route/checkout");
+  checkout = require("./route/checkout"),
+  order = require("./route/order")
 
 app.use("/api/product", product);
 app.use("/api/user", user);
 app.use("/api/checkout", checkout);
+app.use("/api/order", order);
 
 // AUTH
 app.post("/api/auth", (req, res, next) => {

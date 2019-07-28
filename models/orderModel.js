@@ -3,6 +3,7 @@ const mongoose = require('mongoose'),
 
 const orderSchema = new Schema({
   userId: { type: Schema.Types.ObjectId, ref: 'User' },
+  userName: String,
   status: String,
   totalPrice: String,
   idTransaction: String,

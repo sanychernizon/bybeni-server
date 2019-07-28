@@ -12,9 +12,10 @@ router.post("/order-placed", (req, res) => {
     card_expiration_date: req.body.expiry,
     card_cvv: req.body.cvc
   };
-
+  const fullName = `${req.body.userLoged.name} ${req.body.userLoged.lastName}`
   new Order({
     userId: req.body.userLoged._id,
+    userName: fullName,
     status: "processing",
     totalPrice: req.body.totalPrice,
     idTransaction: 0,
