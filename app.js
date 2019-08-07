@@ -12,7 +12,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 mongoose.set("useFindAndModify", false);
 
-// SESSION
+// SESSIONS
 app.use(
   session({
     name: process.env.SESS_NAME,
