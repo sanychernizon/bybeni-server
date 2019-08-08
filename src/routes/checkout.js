@@ -1,8 +1,8 @@
 const ServicePagarme = require("../services/pagarme");
 const express = require("express"),
   router = express.Router(),
-  Order = require("../models/orderModel"),
-  User = require("../models/userModel"),
+  Order = require("../models/OrderModel"),
+  User = require("../models/UserModel"),
   service = new ServicePagarme();
 
 router.post("/order-placed", (req, res) => {

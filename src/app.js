@@ -3,13 +3,11 @@ const express = require("express"),
   app = express(),
   mongoose = require("mongoose"),
   bcrypt = require("bcryptjs"),
-  bodyParser = require("body-parser"),
   cors = require("cors"),
   session = require("express-session");
 
 app.use(cors());
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.json());
 mongoose.set("useFindAndModify", false);
 
 // SESSIONS
@@ -31,11 +29,14 @@ mongoose
   });
 
 // ROUTES
-const product = require("./route/product"),
-  user = require("./route/user"),
-  checkout = require("./route/checkout"),
-  order = require("./route/order")
+const product = require("./routes/product"),
+  user = require("./routes/user"),
+  checkout = require("./routes/checkout"),
+  order = require("./routes/order")
 
+app.get('/', (req, res) => {
+  res.json({ "home": true })
+})
 app.use("/api/product", product);
 app.use("/api/user", user);
 app.use("/api/checkout", checkout);
