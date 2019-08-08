@@ -35,8 +35,9 @@ const product = require("./routes/product"),
   order = require("./routes/order")
 
 app.get('/', (req, res) => {
-  res.json({ "home": true })
+  res.send("API da BYBENI")
 })
+
 app.use("/api/product", product);
 app.use("/api/user", user);
 app.use("/api/checkout", checkout);
