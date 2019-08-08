@@ -1,23 +1,11 @@
-const express = require("express"),
-  router = express.Router(),
-  Order = require("../models/OrderModel");
+const express = require("express");
+const router = express.Router();
+const OrderController = require('../controllers/OrderController')
 
-  router.get('/', (req, res) => {
-    Order.find({}, (err, orders) => {
-      res.send(orders);
-    });
-  })
+  router.get('/', OrderController.findAll)
 
-  router.get('/paid', (req, res) => {
-    Order.find({ status: 'paid' }, (err, orders) => {
-      res.send(orders);
-    });
-  })
+  router.get('/paid', OrderController.findPaid)
 
-  router.get('/refused', (req, res) => {
-    Order.find({ status: 'refused' }, (err, orders) => {
-      res.send(orders);
-    });
-  })
+  router.get('/refused', OrderController.findRefused)
   
 module.exports = router;
